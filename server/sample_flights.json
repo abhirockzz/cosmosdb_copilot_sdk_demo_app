@@ -1,0 +1,772 @@
+[
+    {
+        "flightNumber": "UA 512",
+        "airline": "United Airlines",
+        "fromAirport": "EWR",
+        "toAirport": "ORD",
+        "departureDayOffset": -1,
+        "departureTime": "15:00",
+        "seat": "23A",
+        "gate": "C72"
+    },
+    {
+        "flightNumber": "AA 1247",
+        "airline": "American Airlines",
+        "fromAirport": "DFW",
+        "toAirport": "PHX",
+        "departureDayOffset": -2,
+        "departureTime": "11:15",
+        "seat": "17D",
+        "gate": "A35"
+    },
+    {
+        "flightNumber": "AS 452",
+        "airline": "Alaska Airlines",
+        "fromAirport": "PDX",
+        "toAirport": "SFO",
+        "departureDayOffset": -3,
+        "departureTime": "06:00",
+        "seat": "4A",
+        "gate": "D2"
+    },
+    {
+        "flightNumber": "B6 1116",
+        "airline": "JetBlue Airways",
+        "fromAirport": "JFK",
+        "toAirport": "LAX",
+        "departureDayOffset": -4,
+        "departureTime": "23:00",
+        "seat": "8F",
+        "gate": "T5"
+    },
+    {
+        "flightNumber": "DL 2847",
+        "airline": "Delta Air Lines",
+        "fromAirport": "JFK",
+        "toAirport": "SFO",
+        "departureDayOffset": -5,
+        "departureTime": "07:30",
+        "seat": "11A",
+        "gate": "A3"
+    },
+    {
+        "flightNumber": "UA 888",
+        "airline": "United Airlines",
+        "fromAirport": "SFO",
+        "toAirport": "PVG",
+        "departureDayOffset": -6,
+        "departureTime": "13:30",
+        "seat": "38K",
+        "gate": "G5"
+    },
+    {
+        "flightNumber": "WN 3845",
+        "airline": "Southwest Airlines",
+        "fromAirport": "MDW",
+        "toAirport": "DFW",
+        "departureDayOffset": -7,
+        "departureTime": "14:45",
+        "seat": "22C",
+        "gate": "A8"
+    },
+    {
+        "flightNumber": "HA 11",
+        "airline": "Hawaiian Airlines",
+        "fromAirport": "LAX",
+        "toAirport": "HNL",
+        "departureDayOffset": -8,
+        "departureTime": "09:00",
+        "seat": "14A",
+        "gate": "B22"
+    },
+    {
+        "flightNumber": "NK 412",
+        "airline": "Spirit Airlines",
+        "fromAirport": "FLL",
+        "toAirport": "ATL",
+        "departureDayOffset": -9,
+        "departureTime": "16:00",
+        "seat": "32B",
+        "gate": "H12"
+    },
+    {
+        "flightNumber": "F9 1567",
+        "airline": "Frontier Airlines",
+        "fromAirport": "DEN",
+        "toAirport": "LAS",
+        "departureDayOffset": -10,
+        "departureTime": "10:30",
+        "seat": "28A",
+        "gate": "A45"
+    },
+    {
+        "flightNumber": "AA 45",
+        "airline": "American Airlines",
+        "fromAirport": "JFK",
+        "toAirport": "LAX",
+        "departureDayOffset": -12,
+        "departureTime": "08:00",
+        "seat": "3F",
+        "gate": "C1"
+    },
+    {
+        "flightNumber": "DL 1892",
+        "airline": "Delta Air Lines",
+        "fromAirport": "ATL",
+        "toAirport": "BOS",
+        "departureDayOffset": -14,
+        "departureTime": "13:00",
+        "seat": "19C",
+        "gate": "A28"
+    },
+    {
+        "flightNumber": "UA 2154",
+        "airline": "United Airlines",
+        "fromAirport": "ORD",
+        "toAirport": "DEN",
+        "departureDayOffset": -16,
+        "departureTime": "06:15",
+        "seat": "5A",
+        "gate": "B18"
+    },
+    {
+        "flightNumber": "KL 602",
+        "airline": "KLM Royal Dutch",
+        "fromAirport": "SFO",
+        "toAirport": "AMS",
+        "departureDayOffset": -18,
+        "departureTime": "17:45",
+        "seat": "27H",
+        "gate": "E8"
+    },
+    {
+        "flightNumber": "VS 24",
+        "airline": "Virgin Atlantic",
+        "fromAirport": "JFK",
+        "toAirport": "LHR",
+        "departureDayOffset": -20,
+        "departureTime": "20:00",
+        "seat": "44A",
+        "gate": "D10"
+    },
+    {
+        "flightNumber": "AC 758",
+        "airline": "Air Canada",
+        "fromAirport": "SFO",
+        "toAirport": "YVR",
+        "departureDayOffset": -22,
+        "departureTime": "15:30",
+        "seat": "9D",
+        "gate": "F3"
+    },
+    {
+        "flightNumber": "QF 12",
+        "airline": "Qantas",
+        "fromAirport": "LAX",
+        "toAirport": "SYD",
+        "departureDayOffset": -24,
+        "departureTime": "21:45",
+        "seat": "28K",
+        "gate": "B5"
+    },
+    {
+        "flightNumber": "NH 7",
+        "airline": "All Nippon Airways",
+        "fromAirport": "LAX",
+        "toAirport": "NRT",
+        "departureDayOffset": -26,
+        "departureTime": "12:15",
+        "seat": "35A",
+        "gate": "B1"
+    },
+    {
+        "flightNumber": "AS 1128",
+        "airline": "Alaska Airlines",
+        "fromAirport": "SEA",
+        "toAirport": "LAX",
+        "departureDayOffset": -28,
+        "departureTime": "09:30",
+        "seat": "21F",
+        "gate": "N8"
+    },
+    {
+        "flightNumber": "B6 524",
+        "airline": "JetBlue Airways",
+        "fromAirport": "BOS",
+        "toAirport": "FLL",
+        "departureDayOffset": -30,
+        "departureTime": "07:00",
+        "seat": "6A",
+        "gate": "A5"
+    },
+    {
+        "flightNumber": "WN 1422",
+        "airline": "Southwest Airlines",
+        "fromAirport": "DEN",
+        "toAirport": "PHX",
+        "departureDayOffset": -33,
+        "departureTime": "11:45",
+        "seat": "15C",
+        "gate": "C28"
+    },
+    {
+        "flightNumber": "SQ 31",
+        "airline": "Singapore Airlines",
+        "fromAirport": "SFO",
+        "toAirport": "SIN",
+        "departureDayOffset": -35,
+        "departureTime": "22:30",
+        "seat": "18K",
+        "gate": "G12"
+    },
+    {
+        "flightNumber": "EK 225",
+        "airline": "Emirates",
+        "fromAirport": "LAX",
+        "toAirport": "DXB",
+        "departureDayOffset": -38,
+        "departureTime": "23:55",
+        "seat": "42A",
+        "gate": "B8"
+    },
+    {
+        "flightNumber": "LH 455",
+        "airline": "Lufthansa",
+        "fromAirport": "SFO",
+        "toAirport": "FRA",
+        "departureDayOffset": -40,
+        "departureTime": "16:20",
+        "seat": "31J",
+        "gate": "E15"
+    },
+    {
+        "flightNumber": "AF 83",
+        "airline": "Air France",
+        "fromAirport": "JFK",
+        "toAirport": "CDG",
+        "departureDayOffset": -42,
+        "departureTime": "19:30",
+        "seat": "15A",
+        "gate": "D22"
+    },
+    {
+        "flightNumber": "AA 890",
+        "airline": "American Airlines",
+        "fromAirport": "ORD",
+        "toAirport": "MIA",
+        "departureDayOffset": -45,
+        "departureTime": "10:00",
+        "seat": "22F",
+        "gate": "C8"
+    },
+    {
+        "flightNumber": "BA 287",
+        "airline": "British Airways",
+        "fromAirport": "SFO",
+        "toAirport": "LHR",
+        "departureDayOffset": -48,
+        "departureTime": "18:45",
+        "seat": "24K",
+        "gate": "G8"
+    },
+    {
+        "flightNumber": "DL 567",
+        "airline": "Delta Air Lines",
+        "fromAirport": "LAX",
+        "toAirport": "SEA",
+        "departureDayOffset": -50,
+        "departureTime": "14:15",
+        "seat": "8C",
+        "gate": "A12"
+    },
+    {
+        "flightNumber": "UA 1234",
+        "airline": "United Airlines",
+        "fromAirport": "SFO",
+        "toAirport": "JFK",
+        "departureDayOffset": -55,
+        "departureTime": "08:30",
+        "seat": "12A",
+        "gate": "B42"
+    },
+    {
+        "flightNumber": "WN 2156",
+        "airline": "Southwest Airlines",
+        "fromAirport": "LAS",
+        "toAirport": "OAK",
+        "departureDayOffset": -56,
+        "departureTime": "12:30",
+        "seat": "10B",
+        "gate": "C15"
+    },
+    {
+        "flightNumber": "DL 445",
+        "airline": "Delta Air Lines",
+        "fromAirport": "MSP",
+        "toAirport": "DTW",
+        "departureDayOffset": -57,
+        "departureTime": "08:45",
+        "seat": "16C",
+        "gate": "G12"
+    },
+    {
+        "flightNumber": "BA 178",
+        "airline": "British Airways",
+        "fromAirport": "JFK",
+        "toAirport": "LHR",
+        "departureDayOffset": -58,
+        "departureTime": "22:00",
+        "seat": "52K",
+        "gate": "D7"
+    },
+    {
+        "flightNumber": "AF 69",
+        "airline": "Air France",
+        "fromAirport": "LAX",
+        "toAirport": "CDG",
+        "departureDayOffset": -59,
+        "departureTime": "17:30",
+        "seat": "33A",
+        "gate": "B12"
+    },
+    {
+        "flightNumber": "LH 457",
+        "airline": "Lufthansa",
+        "fromAirport": "LAX",
+        "toAirport": "MUC",
+        "departureDayOffset": -60,
+        "departureTime": "20:15",
+        "seat": "45J",
+        "gate": "B3"
+    },
+    {
+        "flightNumber": "EK 216",
+        "airline": "Emirates",
+        "fromAirport": "SFO",
+        "toAirport": "DXB",
+        "departureDayOffset": -61,
+        "departureTime": "01:30",
+        "seat": "19A",
+        "gate": "A1"
+    },
+    {
+        "flightNumber": "SQ 1",
+        "airline": "Singapore Airlines",
+        "fromAirport": "JFK",
+        "toAirport": "SIN",
+        "departureDayOffset": -62,
+        "departureTime": "23:45",
+        "seat": "22K",
+        "gate": "B9"
+    },
+    {
+        "flightNumber": "UA 1578",
+        "airline": "United Airlines",
+        "fromAirport": "IAH",
+        "toAirport": "LAX",
+        "departureDayOffset": -63,
+        "departureTime": "10:45",
+        "seat": "7F",
+        "gate": "E12"
+    },
+    {
+        "flightNumber": "AA 2341",
+        "airline": "American Airlines",
+        "fromAirport": "CLT",
+        "toAirport": "JFK",
+        "departureDayOffset": -64,
+        "departureTime": "14:00",
+        "seat": "25A",
+        "gate": "B28"
+    },
+    {
+        "flightNumber": "DL 1034",
+        "airline": "Delta Air Lines",
+        "fromAirport": "SLC",
+        "toAirport": "SEA",
+        "departureDayOffset": -65,
+        "departureTime": "16:30",
+        "seat": "13D",
+        "gate": "D5"
+    },
+    {
+        "flightNumber": "B6 2211",
+        "airline": "JetBlue Airways",
+        "fromAirport": "SFO",
+        "toAirport": "BOS",
+        "departureDayOffset": -66,
+        "departureTime": "06:45",
+        "seat": "2A",
+        "gate": "A18"
+    },
+    {
+        "flightNumber": "AS 734",
+        "airline": "Alaska Airlines",
+        "fromAirport": "ANC",
+        "toAirport": "SEA",
+        "departureDayOffset": -67,
+        "departureTime": "11:00",
+        "seat": "18F",
+        "gate": "C4"
+    },
+    {
+        "flightNumber": "WN 4521",
+        "airline": "Southwest Airlines",
+        "fromAirport": "BWI",
+        "toAirport": "MCO",
+        "departureDayOffset": -68,
+        "departureTime": "09:15",
+        "seat": "26C",
+        "gate": "A22"
+    },
+    {
+        "flightNumber": "NH 105",
+        "airline": "All Nippon Airways",
+        "fromAirport": "SFO",
+        "toAirport": "HND",
+        "departureDayOffset": -69,
+        "departureTime": "14:30",
+        "seat": "41K",
+        "gate": "G3"
+    },
+    {
+        "flightNumber": "QF 74",
+        "airline": "Qantas",
+        "fromAirport": "SFO",
+        "toAirport": "SYD",
+        "departureDayOffset": -70,
+        "departureTime": "22:15",
+        "seat": "55A",
+        "gate": "A8"
+    },
+    {
+        "flightNumber": "AC 126",
+        "airline": "Air Canada",
+        "fromAirport": "LAX",
+        "toAirport": "YYZ",
+        "departureDayOffset": -71,
+        "departureTime": "08:00",
+        "seat": "12D",
+        "gate": "B15"
+    },
+    {
+        "flightNumber": "VS 155",
+        "airline": "Virgin Atlantic",
+        "fromAirport": "SFO",
+        "toAirport": "LHR",
+        "departureDayOffset": -72,
+        "departureTime": "19:45",
+        "seat": "38A",
+        "gate": "A12"
+    },
+    {
+        "flightNumber": "KL 606",
+        "airline": "KLM Royal Dutch",
+        "fromAirport": "LAX",
+        "toAirport": "AMS",
+        "departureDayOffset": -74,
+        "departureTime": "16:00",
+        "seat": "29K",
+        "gate": "B6"
+    },
+    {
+        "flightNumber": "UA 345",
+        "airline": "United Airlines",
+        "fromAirport": "DEN",
+        "toAirport": "SFO",
+        "departureDayOffset": -76,
+        "departureTime": "07:15",
+        "seat": "8A",
+        "gate": "B35"
+    },
+    {
+        "flightNumber": "DL 2567",
+        "airline": "Delta Air Lines",
+        "fromAirport": "LAX",
+        "toAirport": "ATL",
+        "departureDayOffset": -78,
+        "departureTime": "05:30",
+        "seat": "34C",
+        "gate": "A1"
+    },
+    {
+        "flightNumber": "AA 178",
+        "airline": "American Airlines",
+        "fromAirport": "MIA",
+        "toAirport": "JFK",
+        "departureDayOffset": -80,
+        "departureTime": "12:45",
+        "seat": "6F",
+        "gate": "D28"
+    },
+    {
+        "flightNumber": "F9 2834",
+        "airline": "Frontier Airlines",
+        "fromAirport": "DFW",
+        "toAirport": "DEN",
+        "departureDayOffset": -82,
+        "departureTime": "18:30",
+        "seat": "30A",
+        "gate": "E5"
+    },
+    {
+        "flightNumber": "NK 891",
+        "airline": "Spirit Airlines",
+        "fromAirport": "LAS",
+        "toAirport": "DFW",
+        "departureDayOffset": -84,
+        "departureTime": "13:15",
+        "seat": "24B",
+        "gate": "D15"
+    },
+    {
+        "flightNumber": "HA 25",
+        "airline": "Hawaiian Airlines",
+        "fromAirport": "SFO",
+        "toAirport": "HNL",
+        "departureDayOffset": -86,
+        "departureTime": "08:30",
+        "seat": "20A",
+        "gate": "G8"
+    },
+    {
+        "flightNumber": "WN 1890",
+        "airline": "Southwest Airlines",
+        "fromAirport": "SAN",
+        "toAirport": "SMF",
+        "departureDayOffset": -88,
+        "departureTime": "15:45",
+        "seat": "5C",
+        "gate": "B2"
+    },
+    {
+        "flightNumber": "UA 79",
+        "airline": "United Airlines",
+        "fromAirport": "EWR",
+        "toAirport": "LHR",
+        "departureDayOffset": -91,
+        "departureTime": "21:00",
+        "seat": "47K",
+        "gate": "C85"
+    },
+    {
+        "flightNumber": "DL 8912",
+        "airline": "Delta Air Lines",
+        "fromAirport": "JFK",
+        "toAirport": "FCO",
+        "departureDayOffset": -94,
+        "departureTime": "17:00",
+        "seat": "39A",
+        "gate": "A15"
+    },
+    {
+        "flightNumber": "B6 387",
+        "airline": "JetBlue Airways",
+        "fromAirport": "FLL",
+        "toAirport": "JFK",
+        "departureDayOffset": -96,
+        "departureTime": "06:30",
+        "seat": "11F",
+        "gate": "T6"
+    },
+    {
+        "flightNumber": "AS 988",
+        "airline": "Alaska Airlines",
+        "fromAirport": "SFO",
+        "toAirport": "ANC",
+        "departureDayOffset": -98,
+        "departureTime": "10:15",
+        "seat": "3A",
+        "gate": "D8"
+    },
+    {
+        "flightNumber": "AA 587",
+        "airline": "American Airlines",
+        "fromAirport": "LAX",
+        "toAirport": "HNL",
+        "departureDayOffset": -101,
+        "departureTime": "09:00",
+        "seat": "16K",
+        "gate": "B10"
+    },
+    {
+        "flightNumber": "UA 2045",
+        "airline": "United Airlines",
+        "fromAirport": "BOS",
+        "toAirport": "LAX",
+        "departureDayOffset": -104,
+        "departureTime": "14:00",
+        "seat": "28F",
+        "gate": "B32"
+    },
+    {
+        "flightNumber": "DL 1478",
+        "airline": "Delta Air Lines",
+        "fromAirport": "PHX",
+        "toAirport": "JFK",
+        "departureDayOffset": -106,
+        "departureTime": "23:30",
+        "seat": "42C",
+        "gate": "D3"
+    },
+    {
+        "flightNumber": "BA 283",
+        "airline": "British Airways",
+        "fromAirport": "LAX",
+        "toAirport": "LHR",
+        "departureDayOffset": -108,
+        "departureTime": "18:00",
+        "seat": "51K",
+        "gate": "B4"
+    },
+    {
+        "flightNumber": "LH 9178",
+        "airline": "Lufthansa",
+        "fromAirport": "ORD",
+        "toAirport": "FRA",
+        "departureDayOffset": -111,
+        "departureTime": "20:45",
+        "seat": "36J",
+        "gate": "K8"
+    },
+    {
+        "flightNumber": "EK 202",
+        "airline": "Emirates",
+        "fromAirport": "JFK",
+        "toAirport": "DXB",
+        "departureDayOffset": -114,
+        "departureTime": "22:30",
+        "seat": "8A",
+        "gate": "A2"
+    },
+    {
+        "flightNumber": "SQ 38",
+        "airline": "Singapore Airlines",
+        "fromAirport": "LAX",
+        "toAirport": "SIN",
+        "departureDayOffset": -116,
+        "departureTime": "23:00",
+        "seat": "25K",
+        "gate": "B7"
+    },
+    {
+        "flightNumber": "WN 567",
+        "airline": "Southwest Airlines",
+        "fromAirport": "DAL",
+        "toAirport": "HOU",
+        "departureDayOffset": -118,
+        "departureTime": "07:00",
+        "seat": "1A",
+        "gate": "C3"
+    },
+    {
+        "flightNumber": "UA 901",
+        "airline": "United Airlines",
+        "fromAirport": "SFO",
+        "toAirport": "NRT",
+        "departureDayOffset": -121,
+        "departureTime": "11:30",
+        "seat": "48K",
+        "gate": "G10"
+    },
+    {
+        "flightNumber": "AA 73",
+        "airline": "American Airlines",
+        "fromAirport": "DFW",
+        "toAirport": "LHR",
+        "departureDayOffset": -124,
+        "departureTime": "19:00",
+        "seat": "14A",
+        "gate": "D45"
+    },
+    {
+        "flightNumber": "DL 3156",
+        "airline": "Delta Air Lines",
+        "fromAirport": "BOS",
+        "toAirport": "DCA",
+        "departureDayOffset": -126,
+        "departureTime": "16:45",
+        "seat": "9C",
+        "gate": "A6"
+    },
+    {
+        "flightNumber": "AC 33",
+        "airline": "Air Canada",
+        "fromAirport": "YYZ",
+        "toAirport": "HND",
+        "departureDayOffset": -128,
+        "departureTime": "13:30",
+        "seat": "32K",
+        "gate": "E20"
+    },
+    {
+        "flightNumber": "VS 7",
+        "airline": "Virgin Atlantic",
+        "fromAirport": "LAX",
+        "toAirport": "LHR",
+        "departureDayOffset": -131,
+        "departureTime": "21:30",
+        "seat": "40A",
+        "gate": "B18"
+    },
+    {
+        "flightNumber": "KL 682",
+        "airline": "KLM Royal Dutch",
+        "fromAirport": "JFK",
+        "toAirport": "AMS",
+        "departureDayOffset": -134,
+        "departureTime": "18:45",
+        "seat": "22H",
+        "gate": "D12"
+    },
+    {
+        "flightNumber": "NH 175",
+        "airline": "All Nippon Airways",
+        "fromAirport": "JFK",
+        "toAirport": "HND",
+        "departureDayOffset": -136,
+        "departureTime": "12:00",
+        "seat": "37A",
+        "gate": "B11"
+    },
+    {
+        "flightNumber": "QF 94",
+        "airline": "Qantas",
+        "fromAirport": "JFK",
+        "toAirport": "MEL",
+        "departureDayOffset": -138,
+        "departureTime": "20:00",
+        "seat": "61K",
+        "gate": "A9"
+    },
+    {
+        "flightNumber": "B6 688",
+        "airline": "JetBlue Airways",
+        "fromAirport": "LGB",
+        "toAirport": "SFO",
+        "departureDayOffset": -141,
+        "departureTime": "08:15",
+        "seat": "5F",
+        "gate": "A4"
+    },
+    {
+        "flightNumber": "AS 265",
+        "airline": "Alaska Airlines",
+        "fromAirport": "LAX",
+        "toAirport": "PDX",
+        "departureDayOffset": -144,
+        "departureTime": "15:00",
+        "seat": "12A",
+        "gate": "D6"
+    },
+    {
+        "flightNumber": "HA 3",
+        "airline": "Hawaiian Airlines",
+        "fromAirport": "HNL",
+        "toAirport": "LAX",
+        "departureDayOffset": -146,
+        "departureTime": "19:30",
+        "seat": "23K",
+        "gate": "G1"
+    }
+]

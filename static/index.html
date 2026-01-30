@@ -1,0 +1,1853 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Diary</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            /* Core palette - vintage aviation */
+            --navy-deep: #0A1628;
+            --navy-medium: #132238;
+            --navy-light: #1C3150;
+            --gold-primary: #D4A84B;
+            --gold-light: #E8C97A;
+            --gold-dark: #B8923E;
+            --cream: #F5F0E6;
+            --cream-dark: #E8E0D0;
+            --white: #FFFFFF;
+            --red-alert: #C94444;
+            --green-confirm: #4A9B6B;
+
+            /* Typography */
+            --font-display: 'JetBrains Mono', monospace;
+            --font-body: 'Source Sans 3', sans-serif;
+
+            /* Spacing */
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            --space-2xl: 3rem;
+
+            /* Transitions */
+            --transition-fast: 150ms ease;
+            --transition-normal: 250ms ease;
+            --transition-slow: 400ms ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--cream);
+            color: var(--navy-deep);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Noise texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* ===== EMAIL ENTRY SCREEN ===== */
+        .email-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: var(--space-xl);
+            background: linear-gradient(180deg, var(--navy-deep) 0%, var(--navy-medium) 100%);
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .email-card {
+            background: var(--cream);
+            border-radius: 4px;
+            padding: var(--space-2xl);
+            max-width: 420px;
+            width: 100%;
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(212, 168, 75, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decorative gold stripe */
+        .email-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--gold-dark), var(--gold-primary), var(--gold-light), var(--gold-primary), var(--gold-dark));
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-xl);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--navy-deep);
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+        }
+
+        .email-card h2 {
+            font-family: var(--font-body);
+            font-weight: 400;
+            font-size: 1rem;
+            color: var(--navy-light);
+            margin-bottom: var(--space-lg);
+        }
+
+        .input-group {
+            margin-bottom: var(--space-lg);
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--navy-light);
+            margin-bottom: var(--space-sm);
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: var(--space-md);
+            border: 2px solid var(--cream-dark);
+            border-radius: 4px;
+            font-family: var(--font-display);
+            font-size: 1rem;
+            background: var(--white);
+            color: var(--navy-deep);
+            transition: border-color var(--transition-fast);
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--gold-primary);
+        }
+
+        .input-group input::placeholder {
+            color: #999;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+            padding: var(--space-md) var(--space-xl);
+            border: none;
+            border-radius: 4px;
+            font-family: var(--font-display);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-primary {
+            background: var(--navy-deep);
+            color: var(--gold-primary);
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: var(--navy-medium);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--navy-deep);
+            border: 2px solid var(--navy-deep);
+        }
+
+        .btn-secondary:hover {
+            background: var(--navy-deep);
+            color: var(--cream);
+        }
+
+        .btn-gold {
+            background: var(--gold-primary);
+            color: var(--navy-deep);
+        }
+
+        .btn-gold:hover {
+            background: var(--gold-light);
+        }
+
+        .btn-danger {
+            background: transparent;
+            color: var(--red-alert);
+            padding: var(--space-sm);
+        }
+
+        .btn-danger:hover {
+            background: rgba(201, 68, 68, 0.1);
+        }
+
+        /* ===== MAIN APP SCREEN ===== */
+        .app-screen {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .app-screen.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .header {
+            background: var(--navy-deep);
+            padding: var(--space-md) var(--space-xl);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .header .logo {
+            color: var(--cream);
+            margin-bottom: 0;
+            font-size: 1.25rem;
+        }
+
+        .header .logo-icon {
+            font-size: 1.5rem;
+            color: var(--gold-primary);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        /* Model Selector */
+        .model-selector {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .model-selector label {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            color: var(--cream);
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .model-dropdown {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            background: rgba(245, 240, 230, 0.1);
+            color: var(--cream);
+            border: 1px solid rgba(245, 240, 230, 0.3);
+            border-radius: 4px;
+            padding: var(--space-xs) var(--space-sm);
+            cursor: pointer;
+            min-width: 160px;
+        }
+
+        .model-dropdown:hover {
+            border-color: var(--gold-primary);
+            background: rgba(245, 240, 230, 0.15);
+        }
+
+        .model-dropdown:focus {
+            outline: none;
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 0 2px rgba(212, 168, 75, 0.2);
+        }
+
+        .model-dropdown option {
+            background: var(--navy-medium);
+            color: var(--cream);
+            padding: var(--space-sm);
+        }
+
+        .model-dropdown optgroup {
+            font-weight: 600;
+            color: var(--gold-primary);
+        }
+
+        .user-email {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            color: var(--gold-primary);
+            opacity: 0.8;
+        }
+
+        .btn-signout {
+            background: transparent;
+            color: var(--cream);
+            border: 1px solid rgba(245, 240, 230, 0.3);
+            padding: var(--space-sm) var(--space-md);
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        .btn-signout:hover {
+            opacity: 1;
+            border-color: var(--cream);
+            background: rgba(245, 240, 230, 0.1);
+        }
+
+        .main-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: var(--space-2xl) var(--space-xl);
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: var(--space-2xl);
+            background: var(--white);
+            border-radius: 4px;
+            border: 2px dashed var(--cream-dark);
+            margin-top: var(--space-xl);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: var(--space-lg);
+            opacity: 0.4;
+        }
+
+        .empty-state h3 {
+            font-family: var(--font-display);
+            font-weight: 500;
+            font-size: 1.25rem;
+            margin-bottom: var(--space-sm);
+            color: var(--navy-deep);
+        }
+
+        .empty-state p {
+            color: var(--navy-light);
+            margin-bottom: var(--space-xl);
+        }
+
+        .empty-state-actions {
+            display: flex;
+            gap: var(--space-md);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ===== FLIGHT CARDS ===== */
+        .flights-list {
+            margin-top: var(--space-xl);
+        }
+
+        .flights-header {
+            margin-bottom: var(--space-lg);
+        }
+
+        .flights-header h2 {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--navy-deep);
+            margin: 0;
+        }
+
+        .flights-hint {
+            font-size: 0.875rem;
+            color: var(--navy-light);
+            margin: var(--space-xs) 0 0 0;
+            opacity: 0.8;
+        }
+
+        .flight-card {
+            background: var(--white);
+            border-radius: 4px;
+            margin-bottom: var(--space-md);
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--cream-dark);
+            position: relative;
+            transition: all var(--transition-fast);
+        }
+
+        .flight-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Boarding pass perforation effect */
+        .flight-card::before {
+            content: '';
+            position: absolute;
+            left: 100px;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: repeating-linear-gradient(to bottom,
+                    var(--cream-dark) 0px,
+                    var(--cream-dark) 4px,
+                    transparent 4px,
+                    transparent 8px);
+        }
+
+        .flight-card-content {
+            display: grid;
+            grid-template-columns: 80px 1fr auto;
+            gap: var(--space-md);
+            padding: var(--space-lg);
+            align-items: center;
+        }
+
+        .flight-date {
+            font-family: var(--font-display);
+            text-align: center;
+            color: var(--navy-deep);
+        }
+
+        .flight-date-day {
+            font-size: 1.75rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .flight-date-month {
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--navy-light);
+        }
+
+        .flight-details {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+
+        .flight-route {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--navy-deep);
+        }
+
+        .flight-route-arrow {
+            color: var(--gold-primary);
+            font-size: 1rem;
+        }
+
+        .flight-meta {
+            display: flex;
+            gap: var(--space-lg);
+            font-size: 0.875rem;
+            color: var(--navy-light);
+        }
+
+        .flight-meta span {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        .flight-meta-label {
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--navy-light);
+            opacity: 0.7;
+        }
+
+        .flight-secondary {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            font-size: 0.8rem;
+            color: var(--navy-light);
+            margin-top: var(--space-xs);
+            opacity: 0.85;
+        }
+
+        .flight-secondary:empty {
+            display: none;
+        }
+
+        .flight-airline {
+            font-weight: 500;
+            color: var(--gold-dark);
+        }
+
+        .flight-time {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+        }
+
+        .flight-passenger {
+            font-weight: 400;
+        }
+
+        .flight-secondary span:not(:last-child)::after {
+            content: '•';
+            margin-left: var(--space-md);
+            color: var(--cream-dark);
+        }
+
+        .flight-actions {
+            opacity: 0;
+            transition: opacity var(--transition-fast);
+        }
+
+        .flight-card:hover .flight-actions {
+            opacity: 1;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 22, 40, 0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-xl);
+            animation: fadeIn 0.2s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--cream);
+            border-radius: 4px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--cream-dark);
+            background: var(--navy-deep);
+            color: var(--cream);
+        }
+
+        .modal-header h3 {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: var(--cream);
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity var(--transition-fast);
+            padding: 0;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            opacity: 1;
+        }
+
+        .modal-body {
+            padding: var(--space-xl);
+        }
+
+        /* ===== UPLOAD ZONE ===== */
+        .upload-zone {
+            border: 2px dashed var(--navy-light);
+            border-radius: 4px;
+            padding: var(--space-2xl);
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            background: var(--white);
+        }
+
+        .upload-zone:hover,
+        .upload-zone.dragover {
+            border-color: var(--gold-primary);
+            background: rgba(212, 168, 75, 0.05);
+        }
+
+        .upload-zone-icon {
+            font-size: 3rem;
+            margin-bottom: var(--space-md);
+            color: var(--navy-light);
+        }
+
+        .upload-zone h4 {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            margin-bottom: var(--space-sm);
+            color: var(--navy-deep);
+        }
+
+        .upload-zone p {
+            font-size: 0.875rem;
+            color: var(--navy-light);
+        }
+
+        .upload-zone input[type="file"] {
+            display: none;
+        }
+
+        /* ===== SAMPLES GALLERY ===== */
+        .samples-section {
+            margin-top: var(--space-xl);
+            text-align: center;
+        }
+
+        .samples-divider {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .samples-divider::before,
+        .samples-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--cream-dark);
+        }
+
+        .samples-label {
+            font-size: 0.8rem;
+            color: var(--navy-light);
+            white-space: nowrap;
+        }
+
+        .samples-gallery {
+            display: flex;
+            gap: var(--space-md);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .sample-thumb {
+            width: 100px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 2px solid var(--cream-dark);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .sample-thumb:hover {
+            transform: scale(1.05);
+            border-color: var(--gold-primary);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Sample Preview Overlay */
+        .sample-preview-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 22, 40, 0.9);
+            z-index: 1100;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-xl);
+        }
+
+        .sample-preview-overlay.active {
+            display: flex;
+        }
+
+        .sample-preview-modal {
+            background: var(--cream);
+            border-radius: 4px;
+            padding: var(--space-lg);
+            max-width: 600px;
+            max-height: 90vh;
+            overflow: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .sample-preview-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            border-radius: 4px;
+            border: 1px solid var(--cream-dark);
+            margin-bottom: var(--space-lg);
+        }
+
+        .sample-preview-actions {
+            display: flex;
+            gap: var(--space-md);
+            justify-content: flex-end;
+        }
+
+        /* ===== EXTRACTION STATUS ===== */
+        .extraction-status {
+            display: none;
+            padding: var(--space-xl);
+        }
+
+        .extraction-status.active {
+            display: block;
+        }
+
+        /* Progress Steps */
+        .progress-steps {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-sm) 0;
+            font-family: var(--font-display);
+            font-size: 0.875rem;
+            color: var(--navy-light);
+            opacity: 0.5;
+            transition: all var(--transition-normal);
+        }
+
+        .progress-step.active {
+            color: var(--navy-deep);
+            opacity: 1;
+        }
+
+        .progress-step.completed {
+            color: var(--green-confirm);
+            opacity: 1;
+        }
+
+        .step-indicator {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: var(--cream-dark);
+            color: var(--navy-light);
+            flex-shrink: 0;
+            transition: all var(--transition-normal);
+        }
+
+        .progress-step.active .step-indicator {
+            background: var(--gold-primary);
+            color: var(--navy-deep);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .progress-step.completed .step-indicator {
+            background: var(--green-confirm);
+            color: var(--white);
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(212, 168, 75, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 0 8px rgba(212, 168, 75, 0);
+            }
+        }
+
+        .step-spinner {
+            width: 28px;
+            height: 28px;
+            border: 2px solid var(--cream-dark);
+            border-top-color: var(--gold-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .step-detail {
+            font-size: 0.75rem;
+            font-family: var(--font-display);
+            font-weight: 500;
+            color: #0891B2;
+            background: rgba(8, 145, 178, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            width: fit-content;
+            opacity: 0;
+            transform: translateY(-4px);
+            transition: all var(--transition-normal);
+        }
+
+        .step-detail::before {
+            content: '└─ ';
+            opacity: 0.6;
+        }
+
+        .step-detail:empty {
+            display: none;
+            background: none;
+            padding: 0;
+        }
+
+        .step-detail.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .progress-step.completed .step-detail {
+            color: #0891B2;
+        }
+
+        /* Individual step colors when active/completed */
+        .progress-step[data-step="1"].active .step-label,
+        .progress-step[data-step="1"].completed .step-label {
+            color: #3B82F6;
+        }
+
+        .progress-step[data-step="1"].active .step-indicator,
+        .progress-step[data-step="1"].completed .step-indicator {
+            background: #3B82F6;
+            color: var(--white);
+        }
+
+        .progress-step[data-step="2"].active .step-label,
+        .progress-step[data-step="2"].completed .step-label {
+            color: #8B5CF6;
+        }
+
+        .progress-step[data-step="2"].active .step-indicator,
+        .progress-step[data-step="2"].completed .step-indicator {
+            background: #8B5CF6;
+            color: var(--white);
+        }
+
+        .progress-step[data-step="3"].active .step-label,
+        .progress-step[data-step="3"].completed .step-label {
+            color: #0891B2;
+        }
+
+        .progress-step[data-step="3"].active .step-indicator,
+        .progress-step[data-step="3"].completed .step-indicator {
+            background: #0891B2;
+            color: var(--white);
+        }
+
+        .progress-step[data-step="4"].active .step-label,
+        .progress-step[data-step="4"].completed .step-label {
+            color: #059669;
+        }
+
+        .progress-step[data-step="4"].active .step-indicator,
+        .progress-step[data-step="4"].completed .step-indicator {
+            background: #059669;
+            color: var(--white);
+        }
+
+        .continue-section {
+            display: none;
+            text-align: center;
+            margin-top: var(--space-xl);
+            padding-top: var(--space-lg);
+            border-top: 1px solid var(--cream-dark);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all var(--transition-normal);
+        }
+
+        .continue-section.visible {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .extraction-spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid var(--cream-dark);
+            border-top-color: var(--gold-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto var(--space-lg);
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .extraction-status p {
+            font-family: var(--font-display);
+            font-size: 0.875rem;
+            color: var(--navy-light);
+        }
+
+        /* ===== EXTRACTED DATA ===== */
+        .extracted-data {
+            display: none;
+        }
+
+        .extracted-data.active {
+            display: block;
+        }
+
+        .extracted-preview {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+
+        .extracted-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 2px solid var(--cream-dark);
+        }
+
+        .extracted-fields {
+            display: grid;
+            gap: var(--space-sm);
+        }
+
+        .extracted-field {
+            display: flex;
+            gap: var(--space-sm);
+            font-size: 0.875rem;
+        }
+
+        .extracted-field-label {
+            font-weight: 600;
+            color: var(--navy-light);
+            min-width: 80px;
+        }
+
+        .extracted-field-value {
+            font-family: var(--font-display);
+            color: var(--navy-deep);
+        }
+
+        .extraction-success {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            color: var(--green-confirm);
+            font-family: var(--font-display);
+            font-size: 0.875rem;
+            margin-bottom: var(--space-lg);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: var(--space-md);
+            justify-content: flex-end;
+            padding-top: var(--space-lg);
+            border-top: 1px solid var(--cream-dark);
+            margin-top: var(--space-lg);
+        }
+
+        /* ===== UTILITIES ===== */
+        .hidden {
+            display: none !important;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        /* ===== AI QUERY INTERFACE ===== */
+        .query-section {
+            background: var(--white);
+            border-radius: 4px;
+            border: 1px solid var(--cream-dark);
+            margin-top: var(--space-xl);
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .query-section.hidden {
+            display: none;
+        }
+
+        .query-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-md) var(--space-lg);
+            background: var(--navy-deep);
+            color: var(--cream);
+            cursor: pointer;
+            user-select: none;
+            transition: background var(--transition-fast);
+        }
+
+        .query-header:hover {
+            background: var(--navy-medium);
+        }
+
+        .query-header h3 {
+            font-family: var(--font-display);
+            font-weight: 500;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .query-header h3 span {
+            color: var(--gold-primary);
+        }
+
+        .query-toggle {
+            background: transparent;
+            border: none;
+            color: var(--gold-primary);
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: var(--space-xs);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform var(--transition-normal);
+        }
+
+        .query-toggle:hover {
+            color: var(--gold-light);
+        }
+
+        .query-section.collapsed .query-toggle {
+            transform: rotate(-90deg);
+        }
+
+        .query-body {
+            padding: var(--space-lg);
+            background: var(--cream);
+            transition: max-height var(--transition-normal) ease, padding var(--transition-normal) ease, opacity var(--transition-fast) ease;
+            max-height: 1000px;
+            overflow: hidden;
+            opacity: 1;
+        }
+
+        .query-section.collapsed .query-body {
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            opacity: 0;
+        }
+
+
+
+        .query-examples {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
+        }
+
+        .query-example {
+            background: var(--white);
+            border: 1px solid var(--cream-dark);
+            padding: var(--space-xs) var(--space-md);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .query-example:hover {
+            background: var(--gold-primary);
+            color: var(--white);
+            border-color: var(--gold-primary);
+        }
+
+        .query-input-container {
+            display: flex;
+            gap: var(--space-sm);
+        }
+
+        .query-input {
+            flex: 1;
+            padding: var(--space-md);
+            border: 1px solid var(--cream-dark);
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+        }
+
+        .query-input:focus {
+            outline: none;
+            border-color: var(--gold-primary);
+        }
+
+        .query-submit {
+            padding: var(--space-md) var(--space-lg);
+            background: var(--gold-primary);
+            color: var(--navy-deep);
+            border: none;
+            border-radius: 4px;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background var(--transition-fast);
+        }
+
+        .query-submit:hover {
+            background: var(--gold-light);
+        }
+
+        .query-submit:disabled {
+            background: var(--cream-dark);
+            cursor: not-allowed;
+        }
+
+        .query-result {
+            margin-top: var(--space-lg);
+            background: var(--white);
+            border: 1px solid var(--cream-dark);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .query-result.hidden {
+            display: none;
+        }
+
+        .query-result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-sm) var(--space-md);
+            background: var(--navy-light);
+            color: var(--cream);
+        }
+
+        .query-result-label {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .query-result-close {
+            background: transparent;
+            border: none;
+            color: var(--cream);
+            font-size: 1.25rem;
+            cursor: pointer;
+            opacity: 0.7;
+        }
+
+        .query-result-close:hover {
+            opacity: 1;
+        }
+
+        .query-result-content {
+            padding: var(--space-lg);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .query-sql {
+            padding: var(--space-md);
+            background: var(--navy-deep);
+            color: var(--cream);
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+        }
+
+        .query-sql.hidden {
+            display: none;
+        }
+
+        .query-sql-label {
+            display: block;
+            color: var(--gold-primary);
+            margin-bottom: var(--space-xs);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .query-sql code {
+            display: block;
+            word-break: break-all;
+            line-height: 1.4;
+        }
+
+        .query-loading {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-md) 0;
+            color: var(--navy-light);
+            font-size: 0.875rem;
+        }
+
+        .query-loading.hidden {
+            display: none;
+        }
+
+        .query-loading-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--gold-primary);
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+        }
+
+        .query-loading-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .query-loading-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: scale(0.8);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* ===== ALL FLIGHTS SECTION ===== */
+        .all-flights-section {
+            margin-top: var(--space-xl);
+            background: var(--white);
+            border-radius: 4px;
+            border: 1px solid var(--cream-dark);
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .all-flights-section.hidden {
+            display: none;
+        }
+
+        .all-flights-toggle {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-md) var(--space-lg);
+            background: var(--cream-dark);
+            cursor: pointer;
+            user-select: none;
+            transition: background var(--transition-fast);
+            font-family: var(--font-display);
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--navy-deep);
+        }
+
+        .all-flights-toggle:hover {
+            background: var(--cream);
+        }
+
+        .all-flights-arrow {
+            color: var(--navy-light);
+            font-size: 0.75rem;
+            transition: transform var(--transition-fast);
+        }
+
+        .all-flights-label {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .all-flights-subtitle {
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            font-weight: 400;
+            color: var(--navy-light);
+            opacity: 0.7;
+        }
+
+        .all-flights-body {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .all-flights-body.hidden {
+            display: none;
+        }
+
+        .all-flights-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .all-flights-table thead {
+            background: var(--navy-deep);
+            color: var(--cream);
+            position: sticky;
+            top: 0;
+        }
+
+        .all-flights-table th {
+            padding: var(--space-sm) var(--space-md);
+            text-align: left;
+            font-family: var(--font-display);
+            font-weight: 500;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            user-select: none;
+            transition: background var(--transition-fast);
+        }
+
+        .all-flights-table th:hover {
+            background: var(--navy-medium);
+        }
+
+        .all-flights-table th .sort-indicator {
+            color: var(--gold-primary);
+            font-size: 0.7rem;
+        }
+
+        .all-flights-table td {
+            padding: var(--space-sm) var(--space-md);
+            border-bottom: 1px solid var(--cream-dark);
+        }
+
+        .all-flights-table tbody tr:hover {
+            background: var(--cream);
+        }
+
+        .all-flights-table .loading-cell,
+        .all-flights-table .error-cell,
+        .all-flights-table .empty-cell {
+            text-align: center;
+            color: var(--navy-light);
+            padding: var(--space-xl);
+        }
+
+        .all-flights-table .error-cell {
+            color: var(--red-alert);
+        }
+
+        .all-flights-table .actions-column {
+            width: 60px;
+            text-align: center;
+        }
+
+        .all-flights-table .actions-cell {
+            text-align: center;
+        }
+
+        .btn-delete-small {
+            background: transparent;
+            border: 1px solid var(--red-alert);
+            color: var(--red-alert);
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all var(--transition-fast);
+            opacity: 0.7;
+        }
+
+        .btn-delete-small:hover {
+            background: var(--red-alert);
+            color: var(--white);
+            opacity: 1;
+        }
+
+        .all-flights-count {
+            font-weight: 600;
+            color: var(--gold-primary);
+            margin-left: 4px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 640px) {
+            .header {
+                padding: var(--space-md);
+            }
+
+            .main-content {
+                padding: var(--space-lg) var(--space-md);
+            }
+
+            .flight-card-content {
+                grid-template-columns: 60px 1fr;
+                grid-template-rows: auto auto;
+            }
+
+            .flight-card::before {
+                left: 60px;
+            }
+
+            .flight-actions {
+                grid-column: 2;
+                opacity: 1;
+                justify-self: end;
+            }
+
+            .flight-meta {
+                flex-wrap: wrap;
+                gap: var(--space-sm);
+            }
+
+            .extracted-preview {
+                grid-template-columns: 1fr;
+            }
+
+            .extracted-image {
+                width: 100%;
+                height: 150px;
+            }
+        }
+
+        /* ===== FOOTER ===== */
+        .app-footer {
+            text-align: center;
+            padding: var(--space-lg) var(--space-md);
+            font-size: 0.85rem;
+            color: var(--navy-light);
+            opacity: 0.8;
+        }
+
+        .app-footer--dark {
+            color: var(--cream-dark);
+        }
+
+        .app-footer-credits {
+            margin-bottom: var(--space-xs);
+        }
+
+        .app-footer-credits .heart {
+            color: var(--red-alert);
+        }
+
+        .app-footer-links {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-md);
+            flex-wrap: wrap;
+        }
+
+        .app-footer-links a {
+            color: var(--gold-primary);
+            text-decoration: none;
+            transition: var(--transition-fast);
+        }
+
+        .app-footer-links a:hover {
+            color: var(--gold-light);
+            text-decoration: underline;
+        }
+
+        .app-footer--dark .app-footer-links a {
+            color: var(--gold-light);
+        }
+
+        .app-footer--dark .app-footer-links a:hover {
+            color: var(--gold-primary);
+        }
+
+        /* Hide main footer when email screen is visible */
+        #mainFooter {
+            display: none;
+        }
+
+        .app-screen.active~#mainFooter {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Email Entry Screen -->
+    <div id="emailScreen" class="email-screen">
+        <div class="email-card">
+            <div class="logo">
+                <span class="logo-icon">✈</span>
+                <span>Flight Diary</span>
+            </div>
+            <h2>Enter your email to get started</h2>
+            <form id="emailForm">
+                <div class="input-group">
+                    <label for="emailInput">Email Address</label>
+                    <input type="email" id="emailInput" placeholder="you@example.com" required autocomplete="email">
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    Continue →
+                </button>
+            </form>
+        </div>
+        <footer class="app-footer app-footer--dark">
+            <div class="app-footer-credits">
+                Built with <span class="heart">❤️</span> using Azure Cosmos DB, GitHub Copilot CLI SDK & Go
+            </div>
+            <div class="app-footer-links">
+                <a href="#" target="_blank">📝 Read the Blog</a>
+                <span>|</span>
+                <a href="#" target="_blank">⭐ View on GitHub</a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Main App Screen -->
+    <div id="appScreen" class="app-screen">
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">✈</span>
+                <span>Flight Diary</span>
+            </div>
+            <div class="header-actions">
+                <div class="model-selector">
+                    <label for="modelSelect">Model:</label>
+                    <select id="modelSelect" class="model-dropdown">
+                        <option value="">Loading...</option>
+                    </select>
+                </div>
+                <span id="userEmail" class="user-email"></span>
+                <button id="signOutBtn" class="btn btn-signout">Sign Out</button>
+                <button id="addFlightBtn" class="btn btn-gold">+ Add Flight</button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state">
+                <div class="empty-state-icon">✈️</div>
+                <h3>No upcoming flights</h3>
+                <p>Upload a boarding pass or ask AI about your past trips</p>
+                <div class="empty-state-actions">
+                    <button id="emptyAddBtn" class="btn btn-primary">Add Your First Flight</button>
+                    <button id="loadSampleBtn" class="btn btn-secondary">Load Sample Data</button>
+                </div>
+            </div>
+
+            <!-- Flights List -->
+            <div id="flightsList" class="flights-list hidden"></div>
+
+            <!-- AI Query Section (below flights) -->
+            <section id="querySection" class="query-section hidden">
+                <div class="query-header" id="queryHeaderToggle">
+                    <h3><span>🔍</span> Ask AI about your flights</h3>
+                    <button class="query-toggle" aria-label="Toggle AI section">▼</button>
+                </div>
+                <div class="query-body">
+                    <div class="query-examples">
+                        <span class="query-example" data-query="How many flights have I taken?">Total flights</span>
+                        <span class="query-example" data-query="What destinations have I visited?">All
+                            destinations</span>
+                        <span class="query-example" data-query="Show my flights to New York">Flights to NYC</span>
+                        <span class="query-example" data-query="Flights from last month">Last month</span>
+                        <span class="query-example" data-query="Show me all my flights this year">This year</span>
+                    </div>
+                    <div class="query-input-container">
+                        <input type="text" id="queryInput" class="query-input"
+                            placeholder="Ask about your flights, e.g. 'Flights to Europe' or 'Which airlines have I flown?'"
+                            autocomplete="off">
+                        <button id="querySubmit" class="query-submit">Ask</button>
+                    </div>
+                    <div id="queryResult" class="query-result hidden">
+                        <div class="query-result-header">
+                            <span class="query-result-label">AI Response</span>
+                            <button id="queryResultClose" class="query-result-close">×</button>
+                        </div>
+                        <div id="queryResultContent" class="query-result-content"></div>
+                        <div id="queryGeneratedSQL" class="query-sql hidden">
+                            <span class="query-sql-label">Generated Cosmos DB Query:</span>
+                            <code id="querySQLCode"></code>
+                        </div>
+                    </div>
+                    <div id="queryLoading" class="query-loading hidden">
+                        <span class="query-loading-dot"></span>
+                        <span class="query-loading-dot"></span>
+                        <span class="query-loading-dot"></span>
+                        <span>Searching...</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- All Flights Section (Expandable) -->
+            <section id="allFlightsSection" class="all-flights-section hidden">
+                <div id="allFlightsToggle" class="all-flights-toggle">
+                    <span class="all-flights-arrow">▶</span>
+                    <div class="all-flights-label">
+                        <span>🔍 All Flights <span id="allFlightsCount" class="all-flights-count"></span></span>
+                        <span class="all-flights-subtitle">Verify data stored in Cosmos DB</span>
+                    </div>
+                </div>
+                <div id="allFlightsBody" class="all-flights-body hidden">
+                    <table class="all-flights-table">
+                        <thead>
+                            <tr>
+                                <th data-sort="departureDate">Date <span class="sort-indicator">⇅</span></th>
+                                <th data-sort="flightNumber">Flight <span class="sort-indicator">⇅</span></th>
+                                <th data-sort="route">Route <span class="sort-indicator">⇅</span></th>
+                                <th data-sort="airline">Airline <span class="sort-indicator">⇅</span></th>
+                                <th data-sort="seat">Seat <span class="sort-indicator">⇅</span></th>
+                                <th data-sort="passenger">Passenger <span class="sort-indicator">⇅</span></th>
+                                <th class="actions-column">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allFlightsTable"></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Add Flight Modal -->
+    <div id="addFlightModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Add Flight</h3>
+                <button class="modal-close" id="closeModal" aria-label="Close modal">×</button>
+            </div>
+            <div class="modal-body">
+                <!-- Upload Zone -->
+                <div id="uploadZone" class="upload-zone">
+                    <div class="upload-zone-icon">📄</div>
+                    <h4>Drop boarding pass image here</h4>
+                    <p>or click to browse</p>
+                    <input type="file" id="fileInput" accept="image/*">
+                </div>
+
+                <!-- Sample Boarding Passes -->
+                <div id="samplesSection" class="samples-section">
+                    <div class="samples-divider">
+                        <span class="samples-label">or try a sample (click to preview)</span>
+                    </div>
+                    <div id="samplesGallery" class="samples-gallery">
+                        <!-- Thumbnails loaded dynamically -->
+                    </div>
+                </div>
+
+                <!-- Extraction Status with Progress Steps -->
+                <div id="extractionStatus" class="extraction-status">
+                    <div class="progress-steps">
+                        <div class="progress-step" data-step="1">
+                            <span class="step-indicator">1</span>
+                            <div class="step-content">
+                                <span class="step-label">Image uploaded</span>
+                                <span class="step-detail"></span>
+                            </div>
+                        </div>
+                        <div class="progress-step" data-step="2">
+                            <span class="step-indicator">2</span>
+                            <div class="step-content">
+                                <span class="step-label">Analyzing boarding pass</span>
+                                <span class="step-detail"></span>
+                            </div>
+                        </div>
+                        <div class="progress-step" data-step="3">
+                            <span class="step-indicator">3</span>
+                            <div class="step-content">
+                                <span class="step-label">Extracting flight details</span>
+                                <span class="step-detail"></span>
+                            </div>
+                        </div>
+                        <div class="progress-step" data-step="4">
+                            <span class="step-indicator">4</span>
+                            <div class="step-content">
+                                <span class="step-label">Ready for confirmation</span>
+                                <span class="step-detail"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="continueSection" class="continue-section">
+                        <button id="continueBtn" class="btn btn-gold">Continue →</button>
+                    </div>
+                </div>
+
+                <!-- Extracted Data -->
+                <div id="extractedData" class="extracted-data">
+                    <div class="extraction-success">
+                        <span>✓</span>
+                        <span>Extraction complete</span>
+                    </div>
+                    <div class="extracted-preview">
+                        <img id="previewImage" class="extracted-image" alt="Boarding pass preview">
+                        <div class="extracted-fields">
+                            <div class="extracted-field">
+                                <span class="extracted-field-label">Flight</span>
+                                <span class="extracted-field-value" id="extractedFlight">-</span>
+                            </div>
+                            <div class="extracted-field">
+                                <span class="extracted-field-label">Route</span>
+                                <span class="extracted-field-value" id="extractedRoute">-</span>
+                            </div>
+                            <div class="extracted-field">
+                                <span class="extracted-field-label">Date</span>
+                                <span class="extracted-field-value" id="extractedDate">-</span>
+                            </div>
+                            <div class="extracted-field">
+                                <span class="extracted-field-label">Time</span>
+                                <span class="extracted-field-value" id="extractedTime">-</span>
+                            </div>
+                            <div class="extracted-field">
+                                <span class="extracted-field-label">Seat</span>
+                                <span class="extracted-field-value" id="extractedSeat">-</span>
+                            </div>
+                            <div class="extracted-field">
+                                <span class="extracted-field-label">Gate</span>
+                                <span class="extracted-field-value" id="extractedGate">-</span>
+                            </div>
+                            <div class="extracted-field">
+                                <span class="extracted-field-label">Passenger</span>
+                                <span class="extracted-field-value" id="extractedPassenger">-</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button id="cancelSave" class="btn btn-secondary">Cancel</button>
+                        <button id="saveFlight" class="btn btn-primary">Save Flight</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sample Preview Overlay -->
+    <div id="samplePreview" class="sample-preview-overlay">
+        <div class="sample-preview-modal">
+            <img id="samplePreviewImage" class="sample-preview-image" src="" alt="Boarding pass preview">
+            <div class="sample-preview-actions">
+                <button id="samplePreviewCancel" class="btn btn-secondary">Cancel</button>
+                <button id="samplePreviewUse" class="btn btn-primary">Use This Sample</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="app-footer" id="mainFooter">
+        <div class="app-footer-credits">
+            Built with <span class="heart">❤️</span> using Azure Cosmos DB, GitHub Copilot CLI SDK & Go
+        </div>
+        <div class="app-footer-links">
+            <a href="#" target="_blank">📝 Read the Blog</a>
+            <span>|</span>
+            <a href="#" target="_blank">⭐ View on GitHub</a>
+        </div>
+    </footer>
+
+    <script src="/static/app.js"></script>
+</body>
+
+</html>
