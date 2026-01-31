@@ -2,7 +2,7 @@
 
 The [GitHub Copilot SDK](https://github.com/github/copilot-sdk) lets you embed Copilot's agentic workflows directly into your apps. Available for Python, TypeScript, Go, and .NET — you define agent behavior, Copilot handles the rest.
 
-This is a demo application showcasing [GitHub Copilot Go SDK](https://github.com/github/copilot-sdk/tree/main/go) integration with [Azure Cosmos DB](https://learn.microsoft.com/en-us/azure/cosmos-db/introduction).
+This is a sample agentic-style application built with GitHub Copilot SDK and [Azure Cosmos DB](https://learn.microsoft.com/en-us/azure/cosmos-db/introduction). It's written in Go and uses Go SDKs for [Cosmos DB](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos) as well as [GitHub Copilot](https://github.com/github/copilot-sdk/tree/main/go).
 
 You can:
 
@@ -22,14 +22,17 @@ You can:
 
 ## Clone the Repository
 
+... and change directory:
+
 ```bash
 git clone https://github.com/abhirockzz/cosmosdb_copilot_sdk_demo_app
+
 cd cosmosdb_copilot_sdk_demo_app
 ```
 
-## Option A: Using the vNext Emulator
+## Option A: Using the Cosmos DB vNext Emulator
 
-The vNext emulator runs on Linux/macOS/Windows via Docker. No Azure account needed.
+The vNext emulator [runs on Linux/macOS/Windows via Docker](https://learn.microsoft.com/en-us/azure/cosmos-db/emulator-linux#running). No Azure account needed.
 
 ### 1. Start the Emulator
 
@@ -49,19 +52,22 @@ Open the Data Explorer at http://localhost:1234 and create:
 ```bash
 export USE_EMULATOR=true
 export COSMOS_ENDPOINT=http://localhost:8081
+export COSMOS_DATABASE="flightlog"
+export COSMOS_CONTAINER="boardingPasses"
+export PORT="8080" # change if needed
 
 go run main.go
 ```
 
 Open http://localhost:8080 in your browser.
 
-Skip to [Usage](#usage) section below.
+Skip to [Use the App](#use-the-app) section below.
 
 ---
 
-### Option B: Using Azure Cosmos DB
+## Option B: Using Azure Cosmos DB
 
-#### 1. Create Cosmos DB Resources
+### 1. Create Cosmos DB Resources
 
 Login using Azure CLI:
 
@@ -72,7 +78,7 @@ az login
 Then run the following commands to create the necessary resources:
 
 ```bash
-# Set environment variables (customize these values)
+# Set environment variables (customize these values as needed)
 export RG_NAME="flight-log-rg"
 export LOCATION="westus2"
 export COSMOS_ACCOUNT="flight-log-cosmos"
@@ -103,7 +109,7 @@ az cosmosdb sql container create \
   --partition-key-path /email
 ```
 
-#### 2. Assign RBAC Role
+### 2. Assign RBAC Role
 
 ```bash
 # Get your user object ID
@@ -121,14 +127,13 @@ az cosmosdb sql role assignment create \
   --scope $COSMOS_ID
 ```
 
-#### 3. Run the App
-
+### 3. Run the App
 
 ```bash
 export COSMOS_ENDPOINT="https://${COSMOS_ACCOUNT}.documents.azure.com:443/"
 export COSMOS_DATABASE="flightlog"
 export COSMOS_CONTAINER="boardingPasses"
-export PORT="8080"
+export PORT="8080" # change if needed
 
 go run main.go
 ```
@@ -137,11 +142,11 @@ Open http://localhost:8080 in your browser.
 
 ---
 
-## Usage
+## Use the App
 
-**Enter any email to login (just for demo purposes)** - Used as partition key for the flight data
+**Enter any email to login (just for demo purposes)** - This is used as partition key for the flight data
 
-**Load sample data** - Quick demo with pre-populated flights
+**Load sample data** - Get going quickly with pre-populated flights
 
 ![](images/home.png)
 
@@ -157,6 +162,46 @@ Open http://localhost:8080 in your browser.
 
 **Save** - Confirm and save to Cosmos DB
 
-**All Flights** - Check all the flights data in Cosmos DB
+**All Flights** - Check all the flights data stored in Cosmos DB
 
 ![](images/all_flights.png)
+
+---
+
+## How It Works
+
+```mermaid
+flowchart LR
+    subgraph Frontend
+        A[Browser]
+    end
+    
+    subgraph "Go Server"
+        B[HTTP Handlers]
+        C[Copilot SDK]
+        D[Tool Handlers]
+        E[Cosmos DB Client]
+    end
+    
+    subgraph External
+        F[Copilot CLI]
+        G[Azure Cosmos DB]
+    end
+    
+    A -->|"1. Upload image / Ask question"| B
+    B --> C
+    C <-->|"2. Create session"| F
+    F -->|"3. Tool call"| D
+    D --> E
+    E <-->|"4. Query/Save"| G
+    D -->|"5. Tool result"| F
+    F -->|"6. Response"| C
+    C --> B
+    B -->|"7. Stream to user"| A
+```
+
+### AI-Generated SQL Queries
+
+When you ask a natural language question like *"show me my flights to New York"*, the app uses Copilot to dynamically generate and execute Cosmos DB SQL queries. The AI translates your intent into SQL (e.g., `SELECT * FROM c WHERE c.email = '...' AND c.toAirport = 'JFK'`), runs it against your data, and summarizes the results.
+
+This is a powerful pattern for building conversational data interfaces — but note that in this demo, queries are always scoped to your partition key (email), so users can only access their own flight data.

@@ -21,14 +21,3 @@ type QueryFlightsParams struct {
 
 // ProgressCallback is called with extraction progress updates
 type ProgressCallback func(eventType, data string)
-
-// // ListFlightsParams defines the parameters for the list_flights tool
-// type ListFlightsParams struct {
-// 	Email string `json:"email" jsonschema:"User email to list flights for"`
-// }
-
-// // DeleteFlightParams defines the parameters for the delete_flight tool
-// type DeleteFlightParams struct {
-// 	ID    string `json:"id" jsonschema:"Flight ID to delete"`
-// 	Email string `json:"email" jsonschema:"User email (partition key)"`
-// }
