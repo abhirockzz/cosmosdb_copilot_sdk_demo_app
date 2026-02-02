@@ -10,7 +10,9 @@ You can:
 - Use natural language queries to retrieve flight history - Copilot generates and runs Cosmos DB SQL queries automatically.
 - Upload a boarding pass image - the app uses GitHub Copilot CLI built-in capabilities to extract flight details automatically.
 
-![](images/app.png)
+📺 **Watch the demo**:
+
+[![YouTube Demo](https://img.youtube.com/vi/uDsfdOG-PjU/maxresdefault.jpg)](https://youtu.be/uDsfdOG-PjU)
 
 ## Prerequisites
 
