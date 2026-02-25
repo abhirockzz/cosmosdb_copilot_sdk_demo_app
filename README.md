@@ -37,36 +37,22 @@ cd cosmosdb_copilot_sdk_demo_app
 Run the entire stack (app, Copilot CLI, and Cosmos DB emulator) with a single command. No local Go or Azure CLI required — just Docker. The Copilot CLI image is built locally from the `@github/copilot` npm package.
 
 ```mermaid
-flowchart TB
-    subgraph docker["Docker Compose Network"]
-        direction TB
+flowchart LR
+    subgraph docker["Docker Compose"]
+        App["Go App\n:8080"]
+        CLI["Copilot CLI\n:4321\n(headless)"]
+        Emulator["Cosmos DB Emulator\n:8081"]
 
-        subgraph app_container["Go App :8080"]
-            SDK["Copilot Go SDK"]
-            CosmosSDK["Cosmos DB Go SDK"]
-            Handlers["HTTP Handlers"]
-        end
-
-        subgraph cli_container["Copilot CLI :4321 (Headless)"]
-            CLI["copilot --headless"]
-            CLI -- "Authenticates via\nGITHUB_TOKEN" --> GH["GitHub Copilot API"]
-        end
-
-        subgraph emulator_container["Cosmos DB Emulator :8081"]
-            Gateway["Gateway"]
-            Explorer["Data Explorer :1234"]
-        end
-
-        SDK -- "TCP connection via\nCOPILOT_CLI_URL" --> CLI
-        CosmosSDK -- "HTTP\n(emulator key auth)" --> Gateway
+        App -- "TCP\n(Copilot SDK)" --> CLI
+        App -- "HTTP" --> Emulator
     end
 
-    Browser["🌐 Browser"] -- ":8080" --> Handlers
-    Browser -. ":1234 (setup)" .-> Explorer
+    CLI -. "GITHUB_TOKEN" .-> GitHub["GitHub Copilot API"]
+    Browser["🌐 Browser"] --> App
 
-    style cli_container fill:#2d333b,stroke:#58a6ff,stroke-width:2px,color:#c9d1d9
-    style emulator_container fill:#2d333b,stroke:#3fb950,stroke-width:2px,color:#c9d1d9
-    style app_container fill:#2d333b,stroke:#d29922,stroke-width:2px,color:#c9d1d9
+    style CLI fill:#2d333b,stroke:#58a6ff,stroke-width:2px,color:#c9d1d9
+    style Emulator fill:#2d333b,stroke:#3fb950,stroke-width:2px,color:#c9d1d9
+    style App fill:#2d333b,stroke:#d29922,stroke-width:2px,color:#c9d1d9
     style docker fill:#161b22,stroke:#30363d,color:#c9d1d9
 ```
 
