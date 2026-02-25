@@ -154,8 +154,12 @@ func (s *Server) handleExtract(w http.ResponseWriter, r *http.Request) {
 	defer file.Close()
 
 	// Save to temp file
-	tempDir := os.TempDir()
-	tempFile := filepath.Join(tempDir, "boarding-pass-"+uuid.New().String()+filepath.Ext(header.Filename))
+	// Use UPLOAD_DIR if set (Docker Compose: shared volume with CLI container), else system temp
+	uploadDir := os.Getenv("UPLOAD_DIR")
+	if uploadDir == "" {
+		uploadDir = os.TempDir()
+	}
+	tempFile := filepath.Join(uploadDir, "boarding-pass-"+uuid.New().String()+filepath.Ext(header.Filename))
 	out, err := os.Create(tempFile)
 	if err != nil {
 		http.Error(w, "Failed to save image: "+err.Error(), http.StatusInternalServerError)

@@ -41,9 +41,19 @@ func main() {
 	}
 
 	// Initialize Copilot SDK client
-	copilotClient := sdk.NewClient(&sdk.ClientOptions{
-		LogLevel: "error",
-	})
+	// When COPILOT_CLI_URL is set (e.g. Docker Compose), connect to external headless CLI over TCP.
+	// Otherwise, SDK spawns the CLI as a child process (local dev mode).
+	var copilotClient *sdk.Client
+	if cliURL := os.Getenv("COPILOT_CLI_URL"); cliURL != "" {
+		log.Printf("Connecting to external Copilot CLI at %s", cliURL)
+		copilotClient = sdk.NewClient(&sdk.ClientOptions{
+			CLIUrl: cliURL,
+		})
+	} else {
+		copilotClient = sdk.NewClient(&sdk.ClientOptions{
+			LogLevel: "error",
+		})
+	}
 	if err := copilotClient.Start(); err != nil {
 		log.Fatalf("Failed to start Copilot client: %v", err)
 	}

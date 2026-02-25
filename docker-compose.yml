@@ -1,0 +1,58 @@
+# ============================================
+# Flight Log App - Docker Compose
+# ============================================
+#
+# Usage:
+#   1. Copy .env.example to .env and set COPILOT_GITHUB_TOKEN
+#   2. docker compose up --build
+#   3. Create database "flightlog" and container "boardingPasses" (partition key: /email)
+#      via the emulator Data Explorer at http://localhost:1234
+#   4. Open http://localhost:8080
+#
+# ============================================
+
+services:
+  # Cosmos DB vNext Emulator
+  cosmos-emulator:
+    image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview
+    command: ["--gateway-endpoint", "cosmos-emulator"]
+    ports:
+      - "8081:8081"   # Cosmos DB endpoint
+      - "1234:1234"   # Data Explorer UI
+    restart: unless-stopped
+
+  # Copilot CLI in headless server mode (built from npm package)
+  copilot-cli:
+    build:
+      context: .
+      dockerfile: Dockerfile.copilot-cli
+    environment:
+      - GITHUB_TOKEN=${COPILOT_GITHUB_TOKEN}
+    ports:
+      - "4321:4321"
+    volumes:
+      - shared-uploads:/tmp/shared
+    restart: unless-stopped
+
+  # Flight Log Go app
+  app:
+    build: .
+    environment:
+      - COPILOT_CLI_URL=copilot-cli:4321
+      - COSMOS_ENDPOINT=http://cosmos-emulator:8081
+      - USE_EMULATOR=true
+      - COSMOS_DATABASE=flightlog
+      - COSMOS_CONTAINER=boardingPasses
+      - UPLOAD_DIR=/tmp/shared
+      - PORT=8080
+    ports:
+      - "8080:8080"
+    volumes:
+      - shared-uploads:/tmp/shared
+    depends_on:
+      - cosmos-emulator
+      - copilot-cli
+    restart: unless-stopped
+
+volumes:
+  shared-uploads:

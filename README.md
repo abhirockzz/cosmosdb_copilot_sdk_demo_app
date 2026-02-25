@@ -16,11 +16,11 @@ You can:
 
 ## Prerequisites
 
-1. [Go](https://go.dev/)
-2. **GitHub Copilot CLI** - [Install it](https://docs.github.com/en/copilot/how-tos/set-up/install-copilot-cli) and login.
-3. **One of the following for Cosmos DB:**
-   - **Run locally**: Use [Cosmos DB vNext emulator](https://learn.microsoft.com/en-us/azure/cosmos-db/emulator-linux)
-   - **Azure**: Azure CLI + Azure Cosmos DB account
+1. **[Docker](https://docs.docker.com/get-docker/)** — that's it for Docker Compose (Option A)
+2. For running locally without Docker (Options B & C):
+   - [Go](https://go.dev/)
+   - **GitHub Copilot CLI** - [Install it](https://docs.github.com/en/copilot/how-tos/set-up/install-copilot-cli) and login
+   - **Cosmos DB**: [vNext emulator](https://learn.microsoft.com/en-us/azure/cosmos-db/emulator-linux) (Option B) or an Azure Cosmos DB account (Option C)
 
 ## Clone the Repository
 
@@ -32,7 +32,105 @@ git clone https://github.com/abhirockzz/cosmosdb_copilot_sdk_demo_app
 cd cosmosdb_copilot_sdk_demo_app
 ```
 
-## Option A: Using the Cosmos DB vNext Emulator
+## Option A: Using Docker Compose
+
+Run the entire stack (app, Copilot CLI, and Cosmos DB emulator) with a single command. No local Go or Azure CLI required — just Docker. The Copilot CLI image is built locally from the `@github/copilot` npm package.
+
+```mermaid
+flowchart TB
+    subgraph docker["Docker Compose Network"]
+        direction TB
+
+        subgraph app_container["Go App :8080"]
+            SDK["Copilot Go SDK"]
+            CosmosSDK["Cosmos DB Go SDK"]
+            Handlers["HTTP Handlers"]
+        end
+
+        subgraph cli_container["Copilot CLI :4321 (Headless)"]
+            CLI["copilot --headless"]
+            CLI -- "Authenticates via\nGITHUB_TOKEN" --> GH["GitHub Copilot API"]
+        end
+
+        subgraph emulator_container["Cosmos DB Emulator :8081"]
+            Gateway["Gateway"]
+            Explorer["Data Explorer :1234"]
+        end
+
+        SDK -- "TCP connection via\nCOPILOT_CLI_URL" --> CLI
+        CosmosSDK -- "HTTP\n(emulator key auth)" --> Gateway
+    end
+
+    Browser["🌐 Browser"] -- ":8080" --> Handlers
+    Browser -. ":1234 (setup)" .-> Explorer
+
+    style cli_container fill:#2d333b,stroke:#58a6ff,stroke-width:2px,color:#c9d1d9
+    style emulator_container fill:#2d333b,stroke:#3fb950,stroke-width:2px,color:#c9d1d9
+    style app_container fill:#2d333b,stroke:#d29922,stroke-width:2px,color:#c9d1d9
+    style docker fill:#161b22,stroke:#30363d,color:#c9d1d9
+```
+
+The Copilot CLI runs **remotely** in its own container in headless server mode. The Go app connects to it over TCP using the Copilot SDK's `CLIUrl` option — the same SDK API works for both local and remote CLI setups.
+
+### 1. Set Up Environment
+
+The Copilot CLI runs in headless mode inside a container and needs a GitHub token to authenticate.
+
+**Option 1: Using GitHub CLI (recommended)**
+
+If you have the [GitHub CLI](https://cli.github.com/) installed and logged in:
+
+```bash
+echo "COPILOT_GITHUB_TOKEN=$(gh auth token)" > .env
+```
+
+**Option 2: Using a Personal Access Token**
+
+1. Go to https://github.com/settings/personal-access-tokens/new
+2. Under **Permissions**, click "add permissions" and select **Copilot Requests**
+3. Generate the token
+4. Create the `.env` file:
+
+```bash
+echo "COPILOT_GITHUB_TOKEN=your_token_here" > .env
+```
+
+### 2. Start Everything
+
+```bash
+docker compose up --build
+```
+
+This starts three containers:
+
+| Service           | Port           | Description                                |
+| ----------------- | -------------- | ------------------------------------------ |
+| `cosmos-emulator` | `8081`, `1234` | Cosmos DB vNext emulator                   |
+| `copilot-cli`     | `4321`         | GitHub Copilot CLI in headless server mode |
+| `app`             | `8080`         | Flight Log Go app                          |
+
+### 3. Create Database and Container
+
+Once the emulator is ready, open the Data Explorer at http://localhost:1234 and create:
+
+- Database: `flightlog`
+- Container: `boardingPasses` with partition key `/email`
+
+### 4. Use the App
+
+Open http://localhost:8080 in your browser.
+
+To stop everything:
+
+```bash
+docker compose down
+```
+
+Skip to [Use the App](#use-the-app) section below.
+
+---
+
+## Option B: Using the Cosmos DB vNext Emulator
 
 The vNext emulator [runs on Linux/macOS/Windows via Docker](https://learn.microsoft.com/en-us/azure/cosmos-db/emulator-linux#running). No Azure account needed.
 
@@ -67,7 +165,7 @@ Skip to [Use the App](#use-the-app) section below.
 
 ---
 
-## Option B: Using Azure Cosmos DB
+## Option C: Using Azure Cosmos DB
 
 ### 1. Create Cosmos DB Resources
 
