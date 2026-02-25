@@ -38,17 +38,14 @@ Run the entire stack (app, Copilot CLI, and Cosmos DB emulator) with a single co
 
 ```mermaid
 flowchart LR
-    subgraph docker["Docker Compose"]
-        App["Go App\n:8080"]
-        CLI["Copilot CLI\n:4321\n(headless)"]
-        Emulator["Cosmos DB Emulator\n:8081"]
+    Browser["🌐 Browser"] --> App["Go App :8080"]
 
-        App -- "TCP\n(Copilot SDK)" --> CLI
-        App -- "HTTP" --> Emulator
+    subgraph docker["Docker Compose"]
+        App -- TCP --> CLI["Copilot CLI :4321 — headless"]
+        App -- HTTP --> Emulator["Cosmos DB Emulator :8081"]
     end
 
-    CLI -. "GITHUB_TOKEN" .-> GitHub["GitHub Copilot API"]
-    Browser["🌐 Browser"] --> App
+    CLI -. GITHUB_TOKEN .-> GitHub["GitHub Copilot API"]
 
     style CLI fill:#2d333b,stroke:#58a6ff,stroke-width:2px,color:#c9d1d9
     style Emulator fill:#2d333b,stroke:#3fb950,stroke-width:2px,color:#c9d1d9
